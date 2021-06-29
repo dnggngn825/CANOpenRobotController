@@ -167,70 +167,139 @@ typedef struct{
 
 
 /* Helper function, must be defined externally. */
-extern "C"{
-void CO_errExit(char* msg);
 
-/* Request CAN configuration or normal mode */
-void CO_CANsetConfigurationMode(int32_t fdSocket);
-void CO_CANsetNormalMode(CO_CANmodule_t *CANmodule);
+#ifdef __cplusplus
+    extern "C"{
+        void CO_errExit(char* msg);
 
-
-/* Initialize CAN module object. */
-CO_ReturnError_t CO_CANmodule_init(
-        CO_CANmodule_t         *CANmodule,
-        int32_t                 CANbaseAddress,
-        CO_CANrx_t              rxArray[],
-        uint16_t                rxSize,
-        CO_CANtx_t              txArray[],
-        uint16_t                txSize,
-        uint16_t                CANbitRate); /* not used */
+        /* Request CAN configuration or normal mode */
+        void CO_CANsetConfigurationMode(int32_t fdSocket);
+        void CO_CANsetNormalMode(CO_CANmodule_t *CANmodule);
 
 
-/* Switch off CANmodule. */
-void CO_CANmodule_disable(CO_CANmodule_t *CANmodule);
+        /* Initialize CAN module object. */
+        CO_ReturnError_t CO_CANmodule_init(
+                CO_CANmodule_t         *CANmodule,
+                int32_t                 CANbaseAddress,
+                CO_CANrx_t              rxArray[],
+                uint16_t                rxSize,
+                CO_CANtx_t              txArray[],
+                uint16_t                txSize,
+                uint16_t                CANbitRate); /* not used */
 
 
-/* Read CAN identifier */
-uint16_t CO_CANrxMsg_readIdent(const CO_CANrxMsg_t *rxMsg);
+        /* Switch off CANmodule. */
+        void CO_CANmodule_disable(CO_CANmodule_t *CANmodule);
 
 
-/* Configure CAN message receive buffer. */
-CO_ReturnError_t CO_CANrxBufferInit(
-        CO_CANmodule_t         *CANmodule,
-        uint16_t                index,
-        uint16_t                ident,
-        uint16_t                mask,
-        bool_t                  rtr,
-        void                   *object,
-        void                  (*pFunct)(void *object, const CO_CANrxMsg_t *message));
+        /* Read CAN identifier */
+        uint16_t CO_CANrxMsg_readIdent(const CO_CANrxMsg_t *rxMsg);
 
 
-/* Configure CAN message transmit buffer. */
-CO_CANtx_t *CO_CANtxBufferInit(
-        CO_CANmodule_t         *CANmodule,
-        uint16_t                index,
-        uint16_t                ident,
-        bool_t                  rtr,
-        uint8_t                 noOfBytes,
-        bool_t                  syncFlag);
+        /* Configure CAN message receive buffer. */
+        CO_ReturnError_t CO_CANrxBufferInit(
+                CO_CANmodule_t         *CANmodule,
+                uint16_t                index,
+                uint16_t                ident,
+                uint16_t                mask,
+                bool_t                  rtr,
+                void                   *object,
+                void                  (*pFunct)(void *object, const CO_CANrxMsg_t *message));
 
 
-/* Send CAN message. */
+        /* Configure CAN message transmit buffer. */
+        CO_CANtx_t *CO_CANtxBufferInit(
+                CO_CANmodule_t         *CANmodule,
+                uint16_t                index,
+                uint16_t                ident,
+                bool_t                  rtr,
+                uint8_t                 noOfBytes,
+                bool_t                  syncFlag);
 
-CO_ReturnError_t CO_CANsend(CO_CANmodule_t *CANmodule, CO_CANtx_t *buffer);
-/* Clear all synchronous TPDOs from CAN module transmit buffers. */
-void CO_CANclearPendingSyncPDOs(CO_CANmodule_t *CANmodule);
+
+        /* Send CAN message. */
+
+        CO_ReturnError_t CO_CANsend(CO_CANmodule_t *CANmodule, CO_CANtx_t *buffer);
+        /* Clear all synchronous TPDOs from CAN module transmit buffers. */
+        void CO_CANclearPendingSyncPDOs(CO_CANmodule_t *CANmodule);
 
 
-/* Verify all errors of CAN module. */
-void CO_CANverifyErrors(CO_CANmodule_t *CANmodule);
+        /* Verify all errors of CAN module. */
+        void CO_CANverifyErrors(CO_CANmodule_t *CANmodule);
 
 
-/* Functions receives CAN messages. It is blocking.
- *
- * @param CANmodule This object.
- */
-void CO_CANrxWait(CO_CANmodule_t *CANmodule);
-}
+        /* Functions receives CAN messages. It is blocking.
+        *
+        * @param CANmodule This object.
+        */
+        void CO_CANrxWait(CO_CANmodule_t *CANmodule);
+        }
+#else
+    void CO_errExit(char* msg);
+
+    /* Request CAN configuration or normal mode */
+    void CO_CANsetConfigurationMode(int32_t fdSocket);
+    void CO_CANsetNormalMode(CO_CANmodule_t *CANmodule);
+
+
+    /* Initialize CAN module object. */
+    CO_ReturnError_t CO_CANmodule_init(
+            CO_CANmodule_t         *CANmodule,
+            int32_t                 CANbaseAddress,
+            CO_CANrx_t              rxArray[],
+            uint16_t                rxSize,
+            CO_CANtx_t              txArray[],
+            uint16_t                txSize,
+            uint16_t                CANbitRate); /* not used */
+
+
+    /* Switch off CANmodule. */
+    void CO_CANmodule_disable(CO_CANmodule_t *CANmodule);
+
+
+    /* Read CAN identifier */
+    uint16_t CO_CANrxMsg_readIdent(const CO_CANrxMsg_t *rxMsg);
+
+
+    /* Configure CAN message receive buffer. */
+    CO_ReturnError_t CO_CANrxBufferInit(
+            CO_CANmodule_t         *CANmodule,
+            uint16_t                index,
+            uint16_t                ident,
+            uint16_t                mask,
+            bool_t                  rtr,
+            void                   *object,
+            void                  (*pFunct)(void *object, const CO_CANrxMsg_t *message));
+
+
+    /* Configure CAN message transmit buffer. */
+    CO_CANtx_t *CO_CANtxBufferInit(
+            CO_CANmodule_t         *CANmodule,
+            uint16_t                index,
+            uint16_t                ident,
+            bool_t                  rtr,
+            uint8_t                 noOfBytes,
+            bool_t                  syncFlag);
+
+
+    /* Send CAN message. */
+
+    CO_ReturnError_t CO_CANsend(CO_CANmodule_t *CANmodule, CO_CANtx_t *buffer);
+    /* Clear all synchronous TPDOs from CAN module transmit buffers. */
+    void CO_CANclearPendingSyncPDOs(CO_CANmodule_t *CANmodule);
+
+
+    /* Verify all errors of CAN module. */
+    void CO_CANverifyErrors(CO_CANmodule_t *CANmodule);
+
+
+    /* Functions receives CAN messages. It is blocking.
+    *
+    * @param CANmodule This object.
+    */
+    void CO_CANrxWait(CO_CANmodule_t *CANmodule);
+#endif // DEBUG
+
+
 
 #endif

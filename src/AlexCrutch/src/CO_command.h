@@ -27,45 +27,91 @@
 #ifndef CO_COMMAND_H
 #define CO_COMMAND_H
 
-/* Functions from external */
-void CO_errExit(char *msg);
-void CO_error(const uint32_t info);
+#ifdef __cplusplus
+    extern "C" 
+    {
+        /* Functions from external */
+        void CO_errExit(char *msg);
+        void CO_error(const uint32_t info);
 
-/**
- * Path for local type  socket. External process can access command interface
- * over this socket. By default its path is "/tmp/CO_command_socket".
- */
-extern char *CO_command_socketPath;
+        /**
+         * Path for local type  socket. External process can access command interface
+         * over this socket. By default its path is "/tmp/CO_command_socket".
+         */
+        extern char *CO_command_socketPath;
 
-/**
- * Initialize thread and create socket for command interface.
- *
- * Make sure, that global variable CO was properly initialized before this call.
- *
- * @return 0 on success.
- */
-int CO_command_init(void);
+        /**
+         * Initialize thread and create socket for command interface.
+         *
+         * Make sure, that global variable CO was properly initialized before this call.
+         *
+         * @return 0 on success.
+         */
+        int CO_command_init(void);
 
-/**
- * Terminate thread and remove socket.
- *
- * @return 0 on success.
- */
-int CO_command_clear(void);
-/**
- * Allow main thread to send SDO messages to nodes
- *
- * @return message recieved on success 
- * @return error on failure
- */
-void cancomm_socketFree(char *command, char *ret);
-/**
- * Using cancomm_socketFree(char* command, char* ret)
- * initialize nodes for PDO messaging
- *
- * @return 0 on success
- * @return error on failure
- */
+        /**
+         * Terminate thread and remove socket.
+         *
+         * @return 0 on success.
+         */
+        int CO_command_clear(void);
+        /**
+         * Allow main thread to send SDO messages to nodes
+         *
+         * @return message recieved on success 
+         * @return error on failure
+         */
+        void cancomm_socketFree(char *command, char *ret);
+        /**
+         * Using cancomm_socketFree(char* command, char* ret)
+         * initialize nodes for PDO messaging
+         *
+         * @return 0 on success
+         * @return error on failure
+         */
+    }
+
+#else
+    /* Functions from external */
+    void CO_errExit(char *msg);
+    void CO_error(const uint32_t info);
+
+    /**
+     * Path for local type  socket. External process can access command interface
+     * over this socket. By default its path is "/tmp/CO_command_socket".
+     */
+    extern char *CO_command_socketPath;
+
+    /**
+     * Initialize thread and create socket for command interface.
+     *
+     * Make sure, that global variable CO was properly initialized before this call.
+     *
+     * @return 0 on success.
+     */
+    int CO_command_init(void);
+
+    /**
+     * Terminate thread and remove socket.
+     *
+     * @return 0 on success.
+     */
+    int CO_command_clear(void);
+    /**
+     * Allow main thread to send SDO messages to nodes
+     *
+     * @return message recieved on success 
+     * @return error on failure
+     */
+    void cancomm_socketFree(char *command, char *ret);
+    /**
+     * Using cancomm_socketFree(char* command, char* ret)
+     * initialize nodes for PDO messaging
+     *
+     * @return 0 on success
+     * @return error on failure
+     */
+#endif // DEBUG
 
 
 #endif

@@ -33,42 +33,85 @@
 #include "CO_SDO.h"
 
 
-/**
- * Time object, usable for timestamping.
- */
-typedef struct {
-    uint64_t           *epochTimeBaseMs;    /**< From CO_time_init(). */
-    uint32_t           *epochTimeOffsetMs;  /**< From CO_time_init(). */
-} CO_time_t;
+#ifdef __cplusplus
+    extern "C" {
+        /**
+         * Time object, usable for timestamping.
+         */
+        typedef struct {
+            uint64_t           *epochTimeBaseMs;    /**< From CO_time_init(). */
+            uint32_t           *epochTimeOffsetMs;  /**< From CO_time_init(). */
+        } CO_time_t;
 
 
-/**
- * Initialize time object.
- *
- * Function must be called in the communication reset section.
- *
- * @param tm This object will be initialized.
- * @param SDO SDO server object.
- * @param epochTimeBaseMs Pointer to milliseconds since Unix Epoch (1.1.1970, 00:00:00, UTC) - base.
- * @param epochTimeOffsetMs pointer to offset. Set to 0 at program startup and increments since then.
- * @param idx_OD_time Index in Object Dictionary.
- */
-void CO_time_init(
-        CO_time_t              *tm,
-        CO_SDO_t               *SDO,
-        uint64_t               *epochTimeBaseMs,
-        uint32_t               *epochTimeOffsetMs,
-        uint16_t                idx_OD_time);
+        /**
+         * Initialize time object.
+         *
+         * Function must be called in the communication reset section.
+         *
+         * @param tm This object will be initialized.
+         * @param SDO SDO server object.
+         * @param epochTimeBaseMs Pointer to milliseconds since Unix Epoch (1.1.1970, 00:00:00, UTC) - base.
+         * @param epochTimeOffsetMs pointer to offset. Set to 0 at program startup and increments since then.
+         * @param idx_OD_time Index in Object Dictionary.
+         */
+        void CO_time_init(
+                CO_time_t              *tm,
+                CO_SDO_t               *SDO,
+                uint64_t               *epochTimeBaseMs,
+                uint32_t               *epochTimeOffsetMs,
+                uint16_t                idx_OD_time);
 
 
-/**
- * Process time object.
- *
- * Function must be called cyclically in 1ms intervals.
- *
- * @param tm This object.
- */
-void CO_time_process(CO_time_t *tm);
+        /**
+         * Process time object.
+         *
+         * Function must be called cyclically in 1ms intervals.
+         *
+         * @param tm This object.
+         */
+        void CO_time_process(CO_time_t *tm);
+    }
+
+#else
+
+    /**
+     * Time object, usable for timestamping.
+     */
+    typedef struct {
+        uint64_t           *epochTimeBaseMs;    /**< From CO_time_init(). */
+        uint32_t           *epochTimeOffsetMs;  /**< From CO_time_init(). */
+    } CO_time_t;
+
+
+    /**
+     * Initialize time object.
+     *
+     * Function must be called in the communication reset section.
+     *
+     * @param tm This object will be initialized.
+     * @param SDO SDO server object.
+     * @param epochTimeBaseMs Pointer to milliseconds since Unix Epoch (1.1.1970, 00:00:00, UTC) - base.
+     * @param epochTimeOffsetMs pointer to offset. Set to 0 at program startup and increments since then.
+     * @param idx_OD_time Index in Object Dictionary.
+     */
+    void CO_time_init(
+            CO_time_t              *tm,
+            CO_SDO_t               *SDO,
+            uint64_t               *epochTimeBaseMs,
+            uint32_t               *epochTimeOffsetMs,
+            uint16_t                idx_OD_time);
+
+
+    /**
+     * Process time object.
+     *
+     * Function must be called cyclically in 1ms intervals.
+     *
+     * @param tm This object.
+     */
+    void CO_time_process(CO_time_t *tm);
+#endif // DEBUG
 
 
 #endif

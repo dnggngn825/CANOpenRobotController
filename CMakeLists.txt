@@ -80,8 +80,8 @@ endif()
 ## Get all source and header files (only the target app folder is included)
 file(GLOB_RECURSE SOURCES "src/core/*.cpp" "src/core/*.c" "src/hardware/*.cpp" "src/hardware/*.c" "src/apps/${STATE_MACHINE_NAME}/*.c" "src/apps/${STATE_MACHINE_NAME}/*.cpp" "lib/FLNL/*.cpp")
 file(GLOB_RECURSE HEADERS "src/core/*.h" "src/hardware/*.h" "src/apps/${STATE_MACHINE_NAME}/*.h")
-file(GLOB_RECURSE ALEX_CRUTCH_SOURCES "src/AlexCrutch/*.cpp" "src/AlexCrutch/*.c")
-file(GLOB_RECURSE ALEX_CRUTCH_HEADERS "src/AlexCrutch/*.h")
+file(GLOB_RECURSE ALEX_CRUTCH_SOURCES "src/AlexCrutch/src/*.cpp" "src/AlexCrutch/src/*.c")
+file(GLOB_RECURSE ALEX_CRUTCH_HEADERS "src/AlexCrutch/src/*.h")
 
 
 ## Set every folder containing .h file as include directory
@@ -209,6 +209,8 @@ find_package(Threads REQUIRED)
 target_link_libraries(${APP_NAME}
 		${CMAKE_THREAD_LIBS_INIT}
 		yaml-cpp)
+
+target_link_libraries(main.cpp PUBLIC pthread)
 
 ## Link ROS libraries
 if(USE_ROS)

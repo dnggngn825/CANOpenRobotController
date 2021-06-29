@@ -273,7 +273,26 @@ extern "C"
  *
  * @return #CO_ReturnError_t: CO_ERROR_NO or CO_ERROR_ILLEGAL_ARGUMENT.
  */
- extern "C"{
+
+#ifdef __cplusplus
+    extern "C"{
+        CO_ReturnError_t CO_RPDO_init(
+            CO_RPDO_t *RPDO,
+            CO_EM_t *em,
+            CO_SDO_t *SDO,
+            CO_SYNC_t *SYNC,
+            CO_NMT_internalState_t *operatingState,
+            uint8_t nodeId,
+            uint16_t defaultCOB_ID,
+            uint8_t restrictionFlags,
+            const CO_RPDOCommPar_t *RPDOCommPar,
+            const CO_RPDOMapPar_t *RPDOMapPar,
+            uint16_t idx_RPDOCommPar,
+            uint16_t idx_RPDOMapPar,
+            CO_CANmodule_t *CANdevRx,
+            uint16_t CANdevRxIdx);
+        }
+#else
     CO_ReturnError_t CO_RPDO_init(
         CO_RPDO_t *RPDO,
         CO_EM_t *em,
@@ -289,7 +308,8 @@ extern "C"
         uint16_t idx_RPDOMapPar,
         CO_CANmodule_t *CANdevRx,
         uint16_t CANdevRxIdx);
- }
+#endif // DEBUG
+ 
 
     /**
  * Initialize TPDO object.
