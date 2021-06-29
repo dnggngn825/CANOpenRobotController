@@ -19,14 +19,14 @@ project(CORC C CXX)
 #set (STATE_MACHINE_NAME "ExoTestMachine")
 #set (STATE_MACHINE_NAME "X2DemoMachine")
 #set (STATE_MACHINE_NAME "LoggingDevice")
-set (STATE_MACHINE_NAME "ForcePlateApp")
-#set (STATE_MACHINE_NAME "AlexMachine")
-
-# Set the CAN Node ID of the system
-add_definitions(-DNODEID=0x51)
+#set (STATE_MACHINE_NAME "ForcePlateApp")
+#set (STATE_MACHINE_NAME "LoggingDevice")
+set (STATE_MACHINE_NAME "AlexMachine")
 
 # Comment to use actual hardware, uncomment for a nor robot (virtual) app
 set(NO_ROBOT OFF)
+set(NO_CRUTCH ON)
+
 
 # ROS Flag. set ON if you want to use ROS. Else, set OFF.
 set(USE_ROS OFF)
@@ -35,10 +35,6 @@ set(USE_ROS OFF)
 # INFO is the recommended level in normal operation
 set(CORC_LOGGING_LEVEL INFO) 
 
-# For Force Plates
-#add_definitions(-DFP_BBB)
-add_definitions(-DFP_PB)
-add_definitions(-DFP_STARTTPO=0x3f1)
 
 ################################################################################
 if(USE_ROS)
@@ -84,6 +80,9 @@ endif()
 ## Get all source and header files (only the target app folder is included)
 file(GLOB_RECURSE SOURCES "src/core/*.cpp" "src/core/*.c" "src/hardware/*.cpp" "src/hardware/*.c" "src/apps/${STATE_MACHINE_NAME}/*.c" "src/apps/${STATE_MACHINE_NAME}/*.cpp" "lib/FLNL/*.cpp")
 file(GLOB_RECURSE HEADERS "src/core/*.h" "src/hardware/*.h" "src/apps/${STATE_MACHINE_NAME}/*.h")
+file(GLOB_RECURSE ALEX_CRUTCH_SOURCES "src/AlexCrutch/*.cpp" "src/AlexCrutch/*.c")
+file(GLOB_RECURSE ALEX_CRUTCH_HEADERS "src/AlexCrutch/*.h")
+
 
 ## Set every folder containing .h file as include directory
 set (INCLUDE_DIRS "")
@@ -94,9 +93,17 @@ endforeach()
 list(REMOVE_DUPLICATES INCLUDE_DIRS)
 ## Add libraries headers
 list (APPEND INCLUDE_DIRS lib/)
-
 add_subdirectory(lib/yaml-cpp/)
 
+## Set every folder containing .h file as include AlexCrutch directory
+set (INCLUDE_ALEX_CRUTCH_DIRS "")
+foreach (_headerFile ${ALEX_CRUTCH_HEADERS})
+	get_filename_component(_dir ${_headerFile} PATH)
+	list (APPEND INCLUDE_ALEX_CRUTCH_DIRS ${_dir})
+endforeach()
+list(REMOVE_DUPLICATES INCLUDE_ALEX_CRUTCH_DIRS)
+## Add libraries headers
+list (APPEND INCLUDE_ALEX_CRUTCH_DIRS lib/)
 
 ## Hack for Yaml files path (absolute path required for ROS use, see X2Robot::initializeRobotParams)
 if(CMAKE_CROSSCOMPILING)
@@ -189,9 +196,11 @@ endif()
 add_executable(${APP_NAME}
 				${SOURCES}
 				)
+add_executable(main.cpp ${ALEX_CRUTCH_SOURCES})
 
 ## Includes
 target_include_directories(${APP_NAME} PRIVATE ${INCLUDE_DIRS})
+target_include_directories(main.cpp PRIVATE ${INCLUDE_ALEX_CRUTCH_DIRS})
 
 ## Set required external packages
 find_package(Threads REQUIRED)
