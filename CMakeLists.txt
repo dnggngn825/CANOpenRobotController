@@ -24,7 +24,8 @@ project(CORC C CXX)
 set (STATE_MACHINE_NAME "AlexMachine")
 
 # Comment to use actual hardware, uncomment for a nor robot (virtual) app
-set(NO_ROBOT ON)
+# set(NO_ROBOT ON)
+set(NO_ROBOT OFF)
 set(NO_CRUTCH ON)
 
 
@@ -57,6 +58,7 @@ if(USE_ROS)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall " )
 else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -static-libstdc++ -static-libgcc" )
+	# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -static-libstdc++ -static-libgcc" )
 endif()
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
