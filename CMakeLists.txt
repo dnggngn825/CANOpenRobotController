@@ -24,7 +24,7 @@ project(CORC C CXX)
 set (STATE_MACHINE_NAME "AlexMachine")
 
 # Comment to use actual hardware, uncomment for a nor robot (virtual) app
-set(NO_ROBOT OFF)
+set(NO_ROBOT ON)
 set(NO_CRUTCH ON)
 
 
